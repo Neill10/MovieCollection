@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MovieCollection
@@ -99,7 +100,7 @@ public class MovieCollection
 
             if (movieTitle.indexOf(searchTerm) != -1)
             {
-                //add the Movie objest to the results list
+                //add the Movie object to the results list
                 results.add(movies.get(i));
             }
         }
@@ -165,22 +166,82 @@ public class MovieCollection
 
     private void searchCast()
     {
-        ArrayList<String> allcast = new ArrayList<String>();
-        for(int i = 0; i < movies.size();i++)
+        ArrayList<String> allCast = new ArrayList<String>();
+        for (int i = 0; i < movies.size();i++)
         {
-            Movie tempMovie = movies.get(i); //USE SPLIT COMMAND
-            String[] cast = tempMovie.getCast().split("//|");
-            for(String x : cast)
-            {
-                for(int index = 0; index < allcast.size();i++)
-                {
-                    if(!(allcast.get(index).equals(x)))
-                    {
-                        allcast.add(x);
+            Movie temp = movies.get(i);
+            String[] casts = temp.getCast().split("\\|");
+            for(int cast = 0; cast < casts.length;cast++) {
+                String castMember = casts[cast];
+                if(!(castMember.equals(" ")) && !(castMember.equals(",")) && !(castMember.equals(""))) {
+                    if (allCast.size() == 0) {
+                        allCast.add(castMember);
+                    } else {
+                        boolean add = true; //prevent repeats
+                        for (int x = 0; x < allCast.size(); x++) {
+
+                            if ((allCast.get(x).equals(castMember))) {
+                                add = false;
+                            }
+
+                        }
+                        if(add)
+                        {
+                            allCast.add(castMember);
+                        }
                     }
                 }
             }
         }
+
+        // sort the results by cast
+
+        for (int j = 1; j < allCast.size(); j++)
+        {
+            String temp = allCast.get(j);
+            int possibleIndex = j;
+            while (possibleIndex > 0 && temp.compareTo(allCast.get(possibleIndex - 1)) < 0)
+            {
+                allCast.set(possibleIndex,allCast.get(possibleIndex - 1));
+                possibleIndex--;
+
+            }
+            allCast.set(possibleIndex,temp);
+        }
+
+
+        // now, display them all to the user
+
+        for (int i = 0; i < allCast.size(); i++)
+        {
+            String cast = allCast.get(i);
+
+            // this will print index 0 as choice 1 in the results list; better for user!
+            int choiceNum = i + 1;
+
+            System.out.println("" + choiceNum + ". " + cast);
+        }
+
+        System.out.println("Which actor would you like to learn more about?");
+        System.out.print("Enter number: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        ArrayList<Movie> actor = new ArrayList<Movie>();
+        //finished this 
+        for (int movie = 0; movie < movies.size(); movie++)
+        {
+
+        }
+
+        Movie selectedMovie = results.get(choice - 1);
+
+        displayMovieInfo(selectedMovie);
+
+        System.out.println("\n ** Press Enter to Return to Main Menu **");
+        scanner.nextLine();
+
+
     }
 
     private void searchKeywords()
