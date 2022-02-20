@@ -194,8 +194,7 @@ public class MovieCollection
             }
         }
 
-        // sort the results by cast
-
+        // sort the results by Cast
         for (int j = 1; j < allCast.size(); j++)
         {
             String temp = allCast.get(j);
@@ -209,9 +208,7 @@ public class MovieCollection
             allCast.set(possibleIndex,temp);
         }
 
-
         // now, display them all to the user
-
         for (int i = 0; i < allCast.size(); i++)
         {
             String cast = allCast.get(i);
@@ -226,22 +223,39 @@ public class MovieCollection
         System.out.print("Enter number: ");
 
         int choice = scanner.nextInt();
-        scanner.nextLine();
-        ArrayList<Movie> actor = new ArrayList<Movie>();
-        //finished this 
-        for (int movie = 0; movie < movies.size(); movie++)
+        String actorName = allCast.get(choice-1);
+        ArrayList<Movie> actorMovies = actorMovies(actorName);
+        int movieNums = 1;
+        //prints out a list of movies the actor is in plus description
+        for (Movie i : actorMovies)
         {
-
+            System.out.println("\n----------Movie# " + movieNums + "----------");
+            displayMovieInfo(i);
+            movieNums++;
         }
-
-        Movie selectedMovie = results.get(choice - 1);
-
-        displayMovieInfo(selectedMovie);
 
         System.out.println("\n ** Press Enter to Return to Main Menu **");
         scanner.nextLine();
+    }
 
-
+    //returns a list of sorted movies the actor is in
+    public ArrayList<Movie> actorMovies(String actor)
+    {
+        ArrayList<Movie> actorMovies = new ArrayList<Movie>();
+        for (int i = 0; i < movies.size();i++)
+        {
+            Movie temp = movies.get(i);
+            String[] actorInMovie= temp.getCast().split("\\|");
+            for(String actorName : actorInMovie)
+            {
+                if(actor.equals(actorName))
+                {
+                    actorMovies.add(movies.get(i));
+                }
+            }
+        }
+        sortResults(actorMovies);
+        return actorMovies;
     }
 
     private void searchKeywords()
