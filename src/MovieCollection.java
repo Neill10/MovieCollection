@@ -571,7 +571,7 @@ public class MovieCollection
         System.out.println("\n ** Press Enter to Return to Main Menu **");
         scanner.nextLine();
     }
-
+/*
     private boolean degreeOfBacon()
     {
         ArrayList<Movie> kevin = new ArrayList<Movie>();
@@ -584,6 +584,7 @@ public class MovieCollection
         }
         return false;
     }
+    */
 
     private void importMovieList(String fileName)
     {
