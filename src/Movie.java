@@ -32,6 +32,10 @@ public class Movie
         this.revenue = revenue;
     }
 
+    public Movie()
+    {}
+    
+
     public String getTitle()
     {
         return title;
