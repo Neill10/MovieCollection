@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 
+
+
 public class MovieCollection
 {
     private ArrayList<Movie> movies;
