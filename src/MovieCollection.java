@@ -8,6 +8,12 @@ import java.util.Scanner;
 
 
 
+import java.util.Iterator;
+import java.util.Map;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
 
 public class MovieCollection
 {
@@ -16,9 +22,10 @@ public class MovieCollection
 
     public MovieCollection(String fileName)
     {
-        importMovieList(fileName);
+        importJSONMovieList(fileName);
         scanner = new Scanner(System.in);
     }
+
 
     public ArrayList<Movie> getMovies()
     {
@@ -26,7 +33,7 @@ public class MovieCollection
     }
 
     public void menu()
-        {
+    {
         String menuOption = "";
 
         System.out.println("Welcome to the movie collection!");
@@ -623,6 +630,51 @@ public class MovieCollection
         {
             // Print out the exception that occurred
             System.out.println("Unable to access " + exception.getMessage());
+        }
+    }
+
+    private void importJSONMovieList(String fileName)
+    {
+        try
+        {
+            FileReader fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = bufferedReader.readLine();
+
+            movies = new ArrayList<Movie>();
+
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                JSONParser parser = new JSONParser();
+                JSONObject jo = (JSONObject) parser.parse(line);
+                JSONArray array = (JSONArray) jo.get("cast");
+
+                String title = (String) jo.get("title");
+                Iterator<String> iterator = (Iterator<String>) jo.get("cast");
+                while(iterator.hasNext())
+                {
+                    System.out.println(iterator.next());
+                }
+                /*
+                String director = (String) jo.get("director");
+                String producer = (String) jo.get("producer");
+                String companies = (String) jo.get("companies");
+                int year = (int) jo.get("year");
+
+                 */
+                //System.out.println(array);
+
+                //Movie nextMovie = new Movie(title, cast, director, producer, companies,year);
+                //movies.add(nextMovie);
+            }
+            bufferedReader.close();
+        }
+        catch(IOException exception)
+        {
+            // Print out the exception that occurred
+            System.out.println("Unable to access " + exception.getMessage());
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 }

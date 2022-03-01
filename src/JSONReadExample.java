@@ -13,14 +13,14 @@ public class JSONReadExample
     public static void main(String[] args) throws Exception
     {
         // parsing file "JSONExample.json"
-        Object obj = new JSONParser().parse(new FileReader("JSONExample.json"));
+        Object obj = new JSONParser().parse(new FileReader("src/movie_data.txt"));
 
         // typecasting obj to JSONObject
         JSONObject jo = (JSONObject) obj;
 
         // getting firstName and lastName
-        String firstName = (String) jo.get("firstName");
-        String lastName = (String) jo.get("lastName");
+        String firstName = (String) jo.get("title");
+        String lastName = (String) jo.get("year");
 
         System.out.println(firstName);
         System.out.println(lastName);

@@ -5,8 +5,8 @@ public class MovieCollectionRunner
 {
     public static void main(String arg[])
     {
-        MovieCollection myCollection = new MovieCollection("src/movies_data.csv");
-        myCollection.menu();
+        MovieCollection myCollection = new MovieCollection("src/movie_data.txt");
+        //myCollection.menu();
     }
 }
 
