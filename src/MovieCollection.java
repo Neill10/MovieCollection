@@ -647,25 +647,65 @@ public class MovieCollection
             {
                 JSONParser parser = new JSONParser();
                 JSONObject jo = (JSONObject) parser.parse(line);
-                JSONArray array = (JSONArray) jo.get("cast");
-
                 String title = (String) jo.get("title");
-                Iterator<String> iterator = (Iterator<String>) jo.get("cast");
+                JSONArray array = (JSONArray) jo.get("cast");
+                Iterator<String> iterator = array.iterator();
+                String cast = "";
                 while(iterator.hasNext())
                 {
-                    System.out.println(iterator.next());
+                    String next = iterator.next();
+                    if(next.indexOf("[[") != -1)
+                    {
+                        next = next.substring(2,next.length()-2);
+                    }
+                    cast = cast + next + "|";//remember to remove the last index of cast when finding cast members(After split)
                 }
-                /*
-                String director = (String) jo.get("director");
-                String producer = (String) jo.get("producer");
-                String companies = (String) jo.get("companies");
+
+                System.out.println(line);
+                array = (JSONArray) jo.get("director");
+                iterator = array.iterator();
+                String director = "";
+                while(iterator.hasNext())
+                {
+                    String next = iterator.next();
+                    if(next.indexOf("[[") != -1)
+                    {
+                        next = next.substring(2,next.length()-2);
+                    }
+                    director = director + next + "|";//remember to remove the last index of cast when finding cast members(After split)
+                }
+
+
+                array = (JSONArray) jo.get("producer");
+                iterator = array.iterator();
+                String producer = "";
+                while(iterator.hasNext())
+                {
+                    String next = iterator.next();
+                    if(next.indexOf("[[") != -1)
+                    {
+                        next = next.substring(2,next.length()-2);
+                    }
+                    producer = producer + next + "|";//remember to remove the last index of cast when finding cast members(After split)
+                }
+
+                array = (JSONArray) jo.get("companies");
+                iterator = array.iterator();
+                String companies = "";
+                while(iterator.hasNext())
+                {
+                    String next = iterator.next();
+                    if(next.indexOf("[[") != -1)
+                    {
+                        next = next.substring(2,next.length()-2);
+                    }
+                    companies = companies + next + "|";//remember to remove the last index of cast when finding cast members(After split)
+                }
+
                 int year = (int) jo.get("year");
 
-                 */
-                //System.out.println(array);
-
-                //Movie nextMovie = new Movie(title, cast, director, producer, companies,year);
-                //movies.add(nextMovie);
+                Movie nextMovie = new Movie(title, cast, director, producer, companies,year);
+                movies.add(nextMovie);
             }
             bufferedReader.close();
         }
