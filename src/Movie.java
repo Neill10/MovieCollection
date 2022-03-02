@@ -17,6 +17,7 @@ public class Movie
 
     private String producer;
     private String companies;
+    private long years;
 
     public Movie(String title, String cast, String director, String tagline,
                  String keywords, String overview, int runtime, String genres,
@@ -35,12 +36,12 @@ public class Movie
         this.revenue = revenue;
     }
 
-    public Movie(String title, String cast, String director , String producers, String companies, int year)
+    public Movie(String title, String cast, String director , String producers, String companies, long years)
     {
         this.title = title;
         this.cast = cast;
         this.director = director;
-        this.year = year;
+        this.years = years;
         this.producer = producers;
         this.companies = companies;
     }

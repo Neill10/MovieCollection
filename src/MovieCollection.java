@@ -2,14 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
-
-
-import java.util.Iterator;
-import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -59,6 +53,30 @@ public class MovieCollection
         }
     }
 
+    public void menu2()
+    {
+        String menuOption = "";
+
+        System.out.println("Welcome to the movie collection!");
+        System.out.println("Total: " + movies.size() + " movies");
+
+        while (!menuOption.equals("q"))
+        {
+            System.out.println("------------ Main Menu ----------");
+            System.out.println("- search (t)itles");
+            System.out.println("- search (c)ast");
+            System.out.println("- (d)egree Of BACON");
+            System.out.println("- (q)uit");
+            System.out.print("Enter choice: ");
+            menuOption = scanner.nextLine();
+
+            if (!menuOption.equals("q"))
+            {
+                processOption2(menuOption);
+            }
+        }
+    }
+
     private void processOption(String option)
     {
         if (option.equals("t"))
@@ -84,6 +102,25 @@ public class MovieCollection
         else if (option.equals("h"))
         {
             listHighestRevenue();
+        }
+        else
+        {
+            System.out.println("Invalid choice!");
+        }
+    }
+    private void processOption2(String option)
+    {
+        if (option.equals("t"))
+        {
+            searchTitles();
+        }
+        else if (option.equals("c"))
+        {
+            searchCast();
+        }
+        else if (option.equals("d"))
+        {
+            degreeOfBacon();
         }
         else
         {
@@ -595,6 +632,72 @@ public class MovieCollection
     }
     */
 
+    private void degreeOfBacon()
+    {
+        System.out.println("Name an actor");
+        Scanner actorName = new Scanner(System.in);
+        String actor = actorName.nextLine();
+        actor = actor.toLowerCase();
+        ArrayList<Movie> includes = actorMovies("Kevin Bacon");
+        actorName.close();
+        for (int i = 1 ; i < 7 ; i++)//repeats 6 times
+        {
+            for(int x = 0; x < includes.size();x++) {
+                Movie temp = includes.get(x);
+                String cast = temp.getCast();
+                String[] cast2 = cast.split("\\|");
+                for(String str : cast2)
+                {
+                    str = str.toLowerCase();
+                    if(str.equals(actor))
+                    {
+                        System.out.println("They are connected in the" + i + "degree");
+                    }
+                }
+            }
+            for (int x = 0; x <includes.size();x++)
+            {
+                Movie temp = includes.get(x);
+                String cast = temp.getCast();
+                ArrayList<Movie> castmovies = actorMovies(cast);
+                for(int count = 0; count < castmovies.size();count++)
+                {
+                    includes.add(castmovies.get(count));
+                    x++;
+                    System.out.println(x);
+                }
+            }
+        }
+
+        /*
+        for(int i = 0 ; i < 6; i++)//repeat for 6
+        {
+            for(int x = 0 ; x < movies.size();x++)
+            {
+                Movie temp = movies.get(i);
+                String cast = temp.getCast();
+                String[] cast2 = cast.split("\\|");
+                for(String str : cast2)
+                {
+                    str = str.toLowerCase();
+                    if(str.equals("kevin bacon"))
+                    {
+                        includes.add(temp);
+                    }
+                }
+            }
+
+        }
+
+         */
+    }
+
+
+
+
+
+
+    private int counter = 0;
     private void importMovieList(String fileName)
     {
         try
@@ -633,7 +736,7 @@ public class MovieCollection
         }
     }
 
-    private void importJSONMovieList(String fileName)
+    private void importJSONMovieList(String fileName)//missing first movie
     {
         try
         {
@@ -661,48 +764,54 @@ public class MovieCollection
                     cast = cast + next + "|";//remember to remove the last index of cast when finding cast members(After split)
                 }
 
-                System.out.println(line);
-                array = (JSONArray) jo.get("director");
-                iterator = array.iterator();
-                String director = "";
-                while(iterator.hasNext())
-                {
-                    String next = iterator.next();
-                    if(next.indexOf("[[") != -1)
-                    {
-                        next = next.substring(2,next.length()-2);
+                String director = null;
+                array = (JSONArray) jo.get("directors");
+                if(array != null) {
+                    iterator = array.iterator();
+                    director = "";
+                    while (iterator.hasNext()) {
+                        String next = iterator.next();
+                        if (next.indexOf("[[") != -1) {
+                            next = next.substring(2, next.length() - 2);
+                        }
+                        director = director + next + "|";
                     }
-                    director = director + next + "|";//remember to remove the last index of cast when finding cast members(After split)
                 }
 
 
-                array = (JSONArray) jo.get("producer");
-                iterator = array.iterator();
-                String producer = "";
-                while(iterator.hasNext())
-                {
-                    String next = iterator.next();
-                    if(next.indexOf("[[") != -1)
-                    {
-                        next = next.substring(2,next.length()-2);
+
+                array = (JSONArray) jo.get("producers");
+                String producer = null;
+                if(array != null) {//not finished
+                    iterator = array.iterator();
+                    producer = "";
+                    while (iterator.hasNext()) {
+                        String next = iterator.next();
+                        if (next.indexOf("[[") != -1) {
+                            next = next.substring(2, next.length() - 2);
+                        }
+                        producer = producer + next + "|";
                     }
-                    producer = producer + next + "|";//remember to remove the last index of cast when finding cast members(After split)
                 }
 
+                String companies = null;
                 array = (JSONArray) jo.get("companies");
-                iterator = array.iterator();
-                String companies = "";
-                while(iterator.hasNext())
-                {
-                    String next = iterator.next();
-                    if(next.indexOf("[[") != -1)
-                    {
-                        next = next.substring(2,next.length()-2);
+                if(array != null) {
+                    iterator = array.iterator();
+                    companies = "";
+                    while (iterator.hasNext()) {
+                        String next = iterator.next();
+                        if (next.indexOf("[[") != -1) {
+                            next = next.substring(2, next.length() - 2);
+                        }
+                        companies = companies + next + "|";
                     }
-                    companies = companies + next + "|";//remember to remove the last index of cast when finding cast members(After split)
                 }
-
-                int year = (int) jo.get("year");
+                long year = 0;
+                if(jo.get("year") != null)
+                {
+                    year = (long) jo.get("year");
+                }
 
                 Movie nextMovie = new Movie(title, cast, director, producer, companies,year);
                 movies.add(nextMovie);
@@ -716,5 +825,6 @@ public class MovieCollection
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
     }
 }
