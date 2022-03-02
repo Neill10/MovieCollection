@@ -634,13 +634,19 @@ public class MovieCollection
 
     private void degreeOfBacon()
     {
+        int degree = degreeOfBaconhelp();
+        System.out.println("Degree: " + degree);
+        System.out.println("\n ** Press Enter to Return to Main Menu **");
+        scanner.nextLine();
+    }
+    private int degreeOfBaconhelp()
+    {
 
         System.out.println("Name an actor: ");
         Scanner actorName = new Scanner(System.in);
         String actor = actorName.nextLine();
         actor = actor.toLowerCase();
         ArrayList<Movie> includes = actorMovies("Kevin Bacon");
-        boolean run = false;
         for (int i = 1 ; i < 7 ; i++)//repeats 6 times
         {
             for(int x = 0; x < includes.size();x++) {
@@ -652,25 +658,14 @@ public class MovieCollection
                     str = str.toLowerCase();
                     if(str.equals(actor))
                     {
-                        System.out.println("They are connected in the " + i + " degree");
-                        run = true;
-                    }
-                    if(run)
-                    {
-                        break;
+                        return i;
                     }
                 }
-                if(run)
-                {
-                    break;
-                }
+
             }
             for (int x = 0; x <includes.size();x++)
             {
-                if(run)
-                {
-                    break;
-                }
+
                 Movie temp = includes.get(x);
                 String cast = temp.getCast();
                 ArrayList<Movie> castmovies = actorMovies(cast);
@@ -682,18 +677,14 @@ public class MovieCollection
                         {
                             includes.add(castmovies.get(count));
                             x++;
-                            break;
+
                         }
                     }
                 }
             }
         }
-        if(!run) {
-            System.out.println("They are not connected");
-        }
-        System.out.println("\n ** Press Enter to Return to Main Menu **");
+        return -1;
 
-        actorName.nextLine();
     }
 
 
