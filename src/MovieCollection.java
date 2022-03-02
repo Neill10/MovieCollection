@@ -634,12 +634,13 @@ public class MovieCollection
 
     private void degreeOfBacon()
     {
-        System.out.println("Name an actor");
+
+        System.out.println("Name an actor: ");
         Scanner actorName = new Scanner(System.in);
         String actor = actorName.nextLine();
         actor = actor.toLowerCase();
         ArrayList<Movie> includes = actorMovies("Kevin Bacon");
-        actorName.close();
+        boolean run = false;
         for (int i = 1 ; i < 7 ; i++)//repeats 6 times
         {
             for(int x = 0; x < includes.size();x++) {
@@ -651,45 +652,48 @@ public class MovieCollection
                     str = str.toLowerCase();
                     if(str.equals(actor))
                     {
-                        System.out.println("They are connected in the" + i + "degree");
+                        System.out.println("They are connected in the " + i + " degree");
+                        run = true;
                     }
+                    if(run)
+                    {
+                        break;
+                    }
+                }
+                if(run)
+                {
+                    break;
                 }
             }
             for (int x = 0; x <includes.size();x++)
             {
+                if(run)
+                {
+                    break;
+                }
                 Movie temp = includes.get(x);
                 String cast = temp.getCast();
                 ArrayList<Movie> castmovies = actorMovies(cast);
                 for(int count = 0; count < castmovies.size();count++)
                 {
-                    includes.add(castmovies.get(count));
-                    x++;
-                    System.out.println(x);
-                }
-            }
-        }
-
-        /*
-        for(int i = 0 ; i < 6; i++)//repeat for 6
-        {
-            for(int x = 0 ; x < movies.size();x++)
-            {
-                Movie temp = movies.get(i);
-                String cast = temp.getCast();
-                String[] cast2 = cast.split("\\|");
-                for(String str : cast2)
-                {
-                    str = str.toLowerCase();
-                    if(str.equals("kevin bacon"))
+                    for(int a = 0 ; a < includes.size(); a++)
                     {
-                        includes.add(temp);
+                        if(!(includes.get(a).equals(castmovies.get(count))))
+                        {
+                            includes.add(castmovies.get(count));
+                            x++;
+                            break;
+                        }
                     }
                 }
             }
-
         }
+        if(!run) {
+            System.out.println("They are not connected");
+        }
+        System.out.println("\n ** Press Enter to Return to Main Menu **");
 
-         */
+        actorName.nextLine();
     }
 
 
