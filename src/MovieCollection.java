@@ -663,21 +663,22 @@ public class MovieCollection
                 }
 
             }
-            for (int x = 0; x <includes.size();x++)
+            System.out.println(includes.size());
+            for (int x = 0; x < includes.size();x++)
             {
-
                 Movie temp = includes.get(x);
-                String cast = temp.getCast();
+                String cast = temp.getCast();///////////////////cast is a huge string of casts not individual
                 ArrayList<Movie> castmovies = actorMovies(cast);
                 for(int count = 0; count < castmovies.size();count++)
                 {
                     for(int a = 0 ; a < includes.size(); a++)
                     {
+                        System.out.println(castmovies.get(count));
+
                         if(!(includes.get(a).equals(castmovies.get(count))))
                         {
                             includes.add(castmovies.get(count));
                             x++;
-
                         }
                     }
                 }
